@@ -41,7 +41,7 @@ requirements:
 
 test:
   imports:
-    - splunk_otel
+    - splunk_otel.tests
   commands:
     - pip check
   requires:
