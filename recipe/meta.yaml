@@ -8,18 +8,23 @@ package:
 source:
   url: https://github.com/signalfx/splunk-otel-python/archive/refs/tags/v{{ version }}.tar.gz
   sha256: 84fe14c6f9d71a2bae83c04beea2287bc41e78185c1bd6d1f6385640a953adc6
+  patches:
+    - 001-Missing-Build-System.patch
 
 build:
-  # entry_points:
-  #   - splunk-py-trace = splunk_otel.cmd.trace:run
-  #   - splunk-py-trace-bootstrap = splunk_otel.cmd.bootstrap:run
-  #   - splk-py-trace = splunk_otel.cmd.trace:run_deprecated
-  #   - splk-py-trace-bootstrap = splunk_otel.cmd.bootstrap:run_deprecated
+  entry_points:
+    - splunk-py-trace = splunk_otel.cmd.trace:run
+    - splunk-py-trace-bootstrap = splunk_otel.cmd.bootstrap:run
+    - splk-py-trace = splunk_otel.cmd.trace:run_deprecated
+    - splk-py-trace-bootstrap = splunk_otel.cmd.bootstrap:run_deprecated
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
   number: 0
   skip: True # [py<38]
 
 requirements:
+  build:
+    - m2-patch  # [win]
+    - patch  # [not win]
   host:
     - python
     - poetry-core
@@ -41,11 +46,19 @@ requirements:
 
 test:
   imports:
-    - splunk_otel.tests
+    - splunk_otel
+  #   - opentelemetry_instrumentation
+  #   - opentelemetry_sdk
+  # #   - splunk_otel.profiling
   commands:
+    # - ls -la
+    # - pytest tests
     - pip check
   requires:
     - pip
+    # - opentelemetry-sdk
+    # - opentelemetry-instrumentation
+    # - pytest
 
 about:
   home: https://github.com/signalfx/splunk-otel-python
