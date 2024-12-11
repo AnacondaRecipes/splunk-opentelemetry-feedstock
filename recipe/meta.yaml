@@ -29,8 +29,6 @@ requirements:
     - python
     - poetry-core
     - pip
-    - setuptools
-    - wheel
   run:
     - python
     - cryptography >=2.0,<=43.0.1
