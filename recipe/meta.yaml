@@ -47,18 +47,10 @@ requirements:
 test:
   imports:
     - splunk_otel
-  #   - opentelemetry_instrumentation
-  #   - opentelemetry_sdk
-  # #   - splunk_otel.profiling
   commands:
-    # - ls -la
-    # - pytest tests
     - pip check
   requires:
     - pip
-    # - opentelemetry-sdk
-    # - opentelemetry-instrumentation
-    # - pytest
 
 about:
   home: https://github.com/signalfx/splunk-otel-python
@@ -69,7 +61,7 @@ about:
   description: |
     This package provides entrypoints to configure OpenTelemetry.
   doc_url: https://github.com/signalfx/splunk-otel-python/tree/main/docs
-  dev_url:
+  dev_url: https://github.com/signalfx/splunk-otel-python
 
 extra:
   recipe-maintainers:
