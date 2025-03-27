@@ -5,6 +5,10 @@ channels:
   - https://staging.continuum.io/prefect/fs/opentelemetry-proto-feedstock/pr6/85e2f29
   - https://staging.continuum.io/prefect/fs/opentelemetry-exporter-otlp-proto-common-feedstock/pr5/89dcfa9
   - https://staging.continuum.io/prefect/fs/opentelemetry-exporter-otlp-proto-http-feedstock/pr4/9cc052e
+  - https://staging.continuum.io/prefect/fs/opentelemetry-propagator-b3-feedstock/pr2/1308bc9
+  - https://staging.continuum.io/prefect/fs/opentelemetry-instrumentation-feedstock/pr4/10a3ff7
+  - https://staging.continuum.io/prefect/fs/opentelemetry-instrumentation-system-metrics-feedstock/pr2/8991ca4
+  - https://staging.continuum.io/prefect/fs/opentelemetry-exporter-otlp-proto-grpc-feedstock/pr4/191372a
 
 build_env_vars:
   ANACONDA_ROCKET_ENABLE_PY313 : yes

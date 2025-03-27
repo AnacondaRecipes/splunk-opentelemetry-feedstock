@@ -52,7 +52,7 @@ about:
   license_family: Apache
   description: |
     This package provides entrypoints to configure OpenTelemetry.
-  doc_url: https://github.com/signalfx/splunk-otel-python/tree/main/docs
+  doc_url: https://github.com/signalfx/splunk-otel-python
   dev_url: https://github.com/signalfx/splunk-otel-python
 
 extra:
