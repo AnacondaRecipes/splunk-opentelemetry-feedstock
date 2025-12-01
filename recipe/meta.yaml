@@ -1,55 +1,59 @@
 {% set name = "splunk-opentelemetry" %}
-{% set version = "2.1.0" %}
+{% set version = "2.8.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name.replace('-', '_') }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
-  sha256: 3063382f7dacbec9d15394d37ec9c8bd157053900b74d48e9bcf7c98b112b434
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name.replace('-', '_') }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
+  sha256: 901a430e1500ac3bdc5158dfd5ced923597fae9f138bed89e8cac5973123de2b
 
 build:
+  number: 0
+  skip: True  # [py<39]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
   entry_points:
     - splunk-py-trace = splunk_otel.cmd.trace:run
     - splunk-py-trace-bootstrap = splunk_otel.cmd.bootstrap:run
     - splk-py-trace = splunk_otel.cmd.trace:run_deprecated
     - splk-py-trace-bootstrap = splunk_otel.cmd.bootstrap:run_deprecated
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
-  number: 0
-  skip: True  # [py<38]
-  skip: True  # [s390x]
 
 requirements:
   host:
+    - pip
     - python
     - hatchling
-    - pip
   run:
     - python
-    - opentelemetry-api 1.30.0
-    - opentelemetry-sdk 1.30.0
-    - opentelemetry-instrumentation 0.51b0
-    - opentelemetry-instrumentation-system-metrics 0.51b0
-    - opentelemetry-semantic-conventions 0.51b0
-    - opentelemetry-propagator-b3 1.30.0
-    - opentelemetry-exporter-otlp-proto-grpc 1.30.0
-    - opentelemetry-exporter-otlp-proto-http 1.30.0
+    - opentelemetry-api 1.38.0
+    - opentelemetry-sdk 1.38.0
+    - opentelemetry-instrumentation 0.59b0
+    - opentelemetry-instrumentation-system-metrics 0.59b0
+    - opentelemetry-semantic-conventions 0.59b0
+    - opentelemetry-propagator-b3 1.38.0
+    - opentelemetry-exporter-otlp-proto-grpc 1.38.0
+    - opentelemetry-exporter-otlp-proto-http 1.38.0
+    - protobuf >=6.31.1
 
 test:
+  source_files:
+    - tests
   imports:
     - splunk_otel
   commands:
     - pip check
+    - pytest -v tests
   requires:
     - pip
+    - pytest
 
 about:
   home: https://github.com/signalfx/splunk-otel-python
-  summary: The Splunk distribution of OpenTelemetry Python Instrumentation provides a Python agent that automatically instruments your Python application to capture and report distributed traces to SignalFx APM.
   license: Apache-2.0
   license_file: LICENSE.txt
   license_family: Apache
+  summary: The Splunk distribution of OpenTelemetry Python Instrumentation provides a Python agent that automatically instruments your Python application to capture and report distributed traces to SignalFx APM.
   description: |
     This package provides entrypoints to configure OpenTelemetry.
   doc_url: https://github.com/signalfx/splunk-otel-python
