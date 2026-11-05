@@ -1,23 +1,18 @@
 {% set name = "splunk-opentelemetry" %}
-{% set version = "2.8.0" %}
+{% set version = "2.13.3" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name.replace('-', '_') }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
-  sha256: 901a430e1500ac3bdc5158dfd5ced923597fae9f138bed89e8cac5973123de2b
+  sha256: 9d0adc2f839f7d6f981104fe48202c1d17640408898e1680de4b8b401b4ce555
 
 build:
   number: 0
-  skip: True  # [py<39]
+  skip: true  # [py<310]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
-  entry_points:
-    - splunk-py-trace = splunk_otel.cmd.trace:run
-    - splunk-py-trace-bootstrap = splunk_otel.cmd.bootstrap:run
-    - splk-py-trace = splunk_otel.cmd.trace:run_deprecated
-    - splk-py-trace-bootstrap = splunk_otel.cmd.bootstrap:run_deprecated
 
 requirements:
   host:
@@ -26,16 +21,24 @@ requirements:
     - hatchling
   run:
     - python
-    - opentelemetry-api 1.38.0
-    - opentelemetry-sdk 1.38.0
-    - opentelemetry-instrumentation 0.59b0
-    - opentelemetry-instrumentation-system-metrics 0.59b0
-    - opentelemetry-semantic-conventions 0.59b0
-    - opentelemetry-propagator-b3 1.38.0
-    - opentelemetry-exporter-otlp-proto-grpc 1.38.0
-    - opentelemetry-exporter-otlp-proto-http 1.38.0
-    - protobuf >=6.31.1
+    - opentelemetry-api ==1.45.1
+    - opentelemetry-sdk ==1.45.1
+    - opentelemetry-propagator-b3 ==1.45.1
+    - opentelemetry-exporter-otlp-proto-grpc ==1.45.1
+    - opentelemetry-exporter-otlp-proto-http ==1.45.1
+    - opentelemetry-configuration ==0.66b1
+    - opentelemetry-instrumentation ==0.66b1
+    - opentelemetry-instrumentation-logging ==0.66b1
+    - opentelemetry-instrumentation-system-metrics ==0.66b1
+    - opentelemetry-semantic-conventions ==0.66b1
+    - opentelemetry-opamp-client ==0.4b0
+    - protobuf >=6.33.5 # not our direct dep, prevents installing vulnerable proto versions (CVE-2025-4565, CVE-2026-0994)
+    - requests >=2.33.0 # Upstream dependencies allow vulnerable Requests versions.
+    - wrapt >=2.5.1
 
+# tests/integration, tests/test_postgresql_oteltest.py and tests/test_generate_metadata.py are
+# excluded: they need the oteltest harness (and repo-local tools/) which is not packaged for
+# the main channel.
 test:
   source_files:
     - tests
@@ -43,7 +46,7 @@ test:
     - splunk_otel
   commands:
     - pip check
-    - pytest -v tests
+    - pytest -vv tests --ignore=tests/integration --ignore=tests/test_postgresql_oteltest.py --ignore=tests/test_generate_metadata.py
   requires:
     - pip
     - pytest
