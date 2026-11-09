@@ -35,6 +35,9 @@ requirements:
     - protobuf >=6.33.5 # not our direct dep, prevents installing vulnerable proto versions (CVE-2025-4565, CVE-2026-0994)
     - requests >=2.33.0 # Upstream dependencies allow vulnerable Requests versions.
     - wrapt >=2.5.1
+  run_constrained:
+    # secureapp
+    - secureapp-python-agent >=26.10.0
 
 # tests/integration and tests/test_postgresql_oteltest.py are excluded: they need the
 # oteltest harness, which is not packaged for the main channel. tests that exercise the
